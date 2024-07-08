@@ -1,0 +1,9 @@
+
+Run container: docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+Copy in the doker the model:  docker cp .\Modelfile ollama:/
+Run command: docker exec -it ollama ollama run create test -f ./Modelfile
+Run model created: docker exec -it ollama ollama run mario
+
+
+
+https://github.com/ollama/ollama/blob/main/docs/api.md
