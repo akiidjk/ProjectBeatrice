@@ -4,8 +4,10 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func ReadModelfile() string {
@@ -29,3 +31,33 @@ func DecodeJson(json_data []byte) map[string]interface{} {
 	}
 	return result
 }
+
+func PrintProgressBar(iteration, total int, prefix, suffix string, length int, fill string) {
+	percent := float64(iteration) / float64(total)
+	filledLength := int(length * iteration / total)
+	end := ">"
+
+	if iteration == total {
+		end = "="
+	}
+	bar := strings.Repeat(fill, filledLength) + end + strings.Repeat("-", (length-filledLength))
+	fmt.Printf("\r%s [%s] %f%% %s", prefix, bar, percent, suffix)
+	if iteration == total {
+		fmt.Println()
+	}
+}
+
+// func ReadStreamData(reader *bufio.Reader) {
+// 	for {
+// 		line, error := reader.ReadBytes('\n')
+// 		if error != nil {
+// 			log.Println(error.Error())
+// 			break
+// 		}
+
+// 		result := DecodeJson(line)
+// 		if result != nil {
+// 			log.Println(result)
+// 		}
+// 	}
+// }
