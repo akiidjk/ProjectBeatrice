@@ -10,6 +10,18 @@ import (
 	"strings"
 )
 
+const (
+	Reset   = "\033[0m"
+	Red     = "\033[31m"
+	Green   = "\033[32m"
+	Yellow  = "\033[33m"
+	Blue    = "\033[34m"
+	Magenta = "\033[35m"
+	Cyan    = "\033[36m"
+	Gray    = "\033[37m"
+	White   = "\033[97m"
+)
+
 func ReadModelfile() string {
 	dat, err := os.ReadFile("./models/Modelfile")
 	Check(err)
@@ -32,16 +44,27 @@ func DecodeJson(json_data []byte) map[string]interface{} {
 	return result
 }
 
-func PrintProgressBar(iteration, total int, prefix, suffix string, length int, fill string) {
-	percent := float64(iteration) / float64(total)
-	filledLength := int(length * iteration / total)
+func PrintProgressBar(iteration, total float64, prefix, suffix string, length int, fill string) {
+	percent := iteration / total
+	filledLength := int(float64(length) * iteration / total)
 	end := ">"
+
+	var color string
 
 	if iteration == total {
 		end = "="
 	}
 	bar := strings.Repeat(fill, filledLength) + end + strings.Repeat("-", (length-filledLength))
-	fmt.Printf("\r%s [%s] %f%% %s", prefix, bar, percent, suffix)
+
+	if percent < 70 && percent >= 40 {
+		color = Yellow
+	} else if percent < 40 {
+		color = Red
+	} else {
+		color = Green
+	}
+
+	fmt.Printf(Blue+"\r%s "+color+" [%s] "+White+" %.1f%% %s", prefix, bar, percent*100, suffix)
 	if iteration == total {
 		fmt.Println()
 	}
