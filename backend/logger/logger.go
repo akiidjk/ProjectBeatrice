@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"backend/utils"
 	"log"
 	"os"
 )
@@ -12,15 +13,6 @@ const (
 	SuccessLevel
 	WarningLevel
 	ErrorLevel
-	Reset   = "\033[0m"
-	Red     = "\033[31m"
-	Green   = "\033[32m"
-	Yellow  = "\033[33m"
-	Blue    = "\033[34m"
-	Magenta = "\033[35m"
-	Cyan    = "\033[36m"
-	Gray    = "\033[37m"
-	White   = "\033[97m"
 )
 
 type Logger struct {
@@ -37,11 +29,11 @@ var logger *Logger
 func init() {
 	logger = &Logger{
 		Level:       InfoLevel,
-		debugLogger: log.New(os.Stdout, Gray+"DEBUG: "+White, log.LstdFlags),
-		infoLogger:  log.New(os.Stdout, Cyan+"INFO: "+White, log.LstdFlags),
-		succeLogger: log.New(os.Stdout, Green+"SUCCESS: "+White, log.LstdFlags),
-		warnLogger:  log.New(os.Stdout, Yellow+"WARN: "+White, log.LstdFlags),
-		errorLogger: log.New(os.Stdout, Red+"ERROR: "+White, log.LstdFlags),
+		debugLogger: log.New(os.Stdout, utils.Gray+"DEBUG: "+utils.White, log.LstdFlags),
+		infoLogger:  log.New(os.Stdout, utils.Cyan+"INFO: "+utils.White, log.LstdFlags),
+		succeLogger: log.New(os.Stdout, utils.Green+"SUCCESS: "+utils.White, log.LstdFlags),
+		warnLogger:  log.New(os.Stdout, utils.Yellow+"WARN: "+utils.White, log.LstdFlags),
+		errorLogger: log.New(os.Stdout, utils.Red+"ERROR: "+utils.White, log.LstdFlags),
 	}
 }
 
