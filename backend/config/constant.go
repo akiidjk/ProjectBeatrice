@@ -1,3 +1,3 @@
 package config
 
-const URL_API = "http://localhost:11434/"
+const API_URL = "http://localhost:11434/"
