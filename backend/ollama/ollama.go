@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,9 +60,12 @@ func CreateModel() {
 
 		result := utils.DecodeJson(line)
 		if result != nil {
-			logger.Info(result["status"].(string))
-			if result["total"] != nil {
-				utils.PrintProgressBar(int(result["completed"].(float64)), int(result["total"].(float64)), "Pulling model", "Model downloaded", 50, "=")
+			if result["total"] != nil && result["completed"] != nil {
+				completed := result["completed"].(float64)
+				total := result["total"].(float64)
+				utils.PrintProgressBar(completed, total, "Pulling model", "| "+time.Now().Format("15:04:05")+" \r", 50, "=")
+			} else {
+				logger.Info(result["status"].(string))
 			}
 		}
 	}
