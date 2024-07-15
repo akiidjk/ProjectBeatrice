@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -33,6 +34,8 @@ func CreateModel() {
 
 	userData := []byte(`{"name": "beatrice","modelfile": "` + model + `"}`)
 
+	logger.Debug("Data: " + string(userData))
+
 	request, error := http.NewRequest("POST", config.API_URL+"api/create", bytes.NewBuffer(userData))
 	request.Header.Set("Content-Type", "application/json; charset=utf-8")
 
@@ -47,6 +50,13 @@ func CreateModel() {
 	if error != nil {
 		logger.Error(error.Error())
 		utils.Check(error)
+	}
+
+	if response.StatusCode != 200 {
+		logger.Error("Error creating model")
+		bodyBytes, _ := io.ReadAll(response.Body)
+		logger.Error(string(bodyBytes))
+		os.Exit(1)
 	}
 
 	//Read stream
@@ -65,7 +75,11 @@ func CreateModel() {
 				total := result["total"].(float64)
 				utils.PrintProgressBar(completed, total, "Pulling model", "| "+time.Now().Format("15:04:05")+" \r", 50, "=")
 			} else {
-				logger.Info(result["status"].(string))
+				if result["status"] != nil {
+					logger.Info(result["status"].(string))
+				} else {
+					logger.Error(fmt.Sprintf("%v", result))
+				}
 			}
 		}
 	}
