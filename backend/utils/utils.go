@@ -30,6 +30,7 @@ func ReadModelfile() string {
 
 func Check(e error) {
 	if e != nil {
+		fmt.Print(e.Error())
 		panic(e)
 	}
 }

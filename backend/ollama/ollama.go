@@ -107,18 +107,12 @@ func SendMessage(c *gin.Context, user_message string) int {
 	request, err := http.NewRequest("POST", config.API_URL+"api/chat", bytes.NewBuffer(data))
 	request.Header.Set("Content-Type", "application/json; charset=utf-8")
 
-	if err != nil {
-		logger.Error(err.Error())
-		utils.Check(err)
-	}
+	utils.Check(err)
 
 	client := &http.Client{}
 	response, err := client.Do(request)
 
-	if err != nil {
-		logger.Error(err.Error())
-		utils.Check(err)
-	}
+	utils.Check(err)
 
 	reader := bufio.NewReader(response.Body)
 	var model_message string = ""
@@ -184,21 +178,15 @@ func ShowInfoModel(model string, verbose string) (string, int) {
 
 	logger.Debug("Data: " + string(data))
 
-	request, error := http.NewRequest("POST", config.API_URL+"api/show", bytes.NewBuffer(data))
+	request, err := http.NewRequest("POST", config.API_URL+"api/show", bytes.NewBuffer(data))
 	request.Header.Set("Content-Type", "application/json; charset=utf-8")
 
-	if error != nil {
-		logger.Error(error.Error())
-		utils.Check(error)
-	}
+	utils.Check(err)
 
 	client := &http.Client{}
-	response, error := client.Do(request)
+	response, err := client.Do(request)
 
-	if error != nil {
-		logger.Error(error.Error())
-		utils.Check(error)
-	}
+	utils.Check(err)
 
 	logger.Info("Model info")
 	bodyBytes, _ := io.ReadAll(response.Body)
