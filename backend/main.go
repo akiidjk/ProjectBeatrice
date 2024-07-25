@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/db"
 	"backend/logger"
 	"backend/ollama"
 	"backend/routes"
@@ -28,6 +29,10 @@ func main() {
 	logger.Success("Model created...")
 
 	logger.Success("Started...")
+
+	// Connect to the database
+	db.Init()
+	db.GetSession()
 
 	// Define the route
 	r.GET("/", routes.GetStatus)
