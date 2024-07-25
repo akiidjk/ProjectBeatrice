@@ -1,34 +1,29 @@
-# Temporany file, will be updated in the future, this is not final config
-
-version: '3'
+# Temporary file, will be updated in the future, this is not final config
 services:
   backend:
-    image: ./backend/Dockerfile
+    build: ./backend
     ports:
       - 8080:8080
-    volumes:
-      - ./backend:/app
-    # environment:
-    #   - DB_HOST=db
-    #   - DB_PORT=5432
-    #   - DB_USER=your-db-user
-    #   - DB_PASSWORD=your-db-password
-    #   - DB_NAME=your-db-name
+    depends_on:
+      - ollama
+      - cassandradb
 
   ollama:
     image: ollama/ollama:latest
     ports:
-      - 8000:8000
+      - 11434:11434
     volumes:
       - ./ollama:/app
     # environment:
 
+    #! Note: For open a cql cli use this command: docker exec -it <container_id> cqlsh
   cassandradb:
     image: cassandra:latest
     ports:
       - 9042:9042
     volumes:
       - cassandra_data:/var/lib/cassandra
+      - ./init.cql:/init/init.cql
 
 volumes:
   cassandra_data:

@@ -8,10 +8,7 @@ COPY ./ /server
 
 RUN apk update && apk add --no-cache git
 RUN go mod tidy
-
-
 RUN go build -o api-beatrice /server
-
 
 FROM gcr.io/distroless/base-debian10
 
